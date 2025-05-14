@@ -66,7 +66,7 @@ const scaffoldBasicsListSchema = z.object({
 type ScaffoldBasicsList = z.infer<typeof scaffoldBasicsListSchema>;
 
 async function getScaffolds(logger: SimpleLogger) {
-  const url = "https://scaffolds-manifest.lmstudio.ai";
+  const url = "https://scaffolds-manifest.entorno-juan.ai";
   const response = await fetch(url);
   const json = await response.json();
   if (!Array.isArray(json)) {
@@ -101,15 +101,15 @@ export const create = command({
     const scaffoldBasicsList = filteredArray(scaffoldBasicsListSchema).parse(allScaffolds);
     if (scaffoldBasicsList.length !== allScaffolds.length) {
       logger.warn(
-        "Cannot parse some of the scaffolds. This is likely due to outdated LM Studio Version.",
+        "Cannot parse some of the scaffolds. This is likely due to outdated Entorno Juan Version.",
       );
-      logger.warn("Please update LM Studio from https://lmstudio.ai");
+      logger.warn("Please update Entorno Juan from https://entorno-juan.ai");
     }
 
     console.info(
       boxen(
         text`
-          ${chalk.greenBright.underline(" Welcome to LM Studio Interactive Project Creator ")}
+          ${chalk.greenBright.underline(" Welcome to Entorno Juan Interactive Project Creator ")}
 
           ${chalk.white("Select a scaffold to use from the list below.")}
         `,
@@ -139,9 +139,9 @@ export const create = command({
     );
     if (!scaffold.success) {
       logger.error(
-        "Failed to parse scaffold data. This is likely due to outdated LM Studio Version.",
+        "Failed to parse scaffold data. This is likely due to outdated Entorno Juan Version.",
       );
-      logger.error("Please update LM Studio from https://lmstudio.ai");
+      logger.error("Please update Entorno Juan from https://entorno-juan.ai");
       logger.debug(scaffold.error);
       process.exit(1);
     }
@@ -277,7 +277,7 @@ async function createWithScaffold(logger: SimpleLogger, scaffold: Scaffold) {
     let stdout = "";
     const child = spawn(
       process.platform === "win32" ? "npm.cmd" : "npm",
-      ["pack", `@lmstudio/scaffold-${scaffold.name}@latest`, "--prefer-online"],
+      ["pack", `@entorno-juan/scaffold-${scaffold.name}@latest`, "--prefer-online"],
       { cwd: tempDir, shell: true },
     );
     child.stdout.on("data", data => {
@@ -349,7 +349,7 @@ async function createWithScaffold(logger: SimpleLogger, scaffold: Scaffold) {
   packageJson.version = "0.0.0";
   await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), "utf8");
 
-  await rm(`${projectName}/lms-scaffold.json`);
+  await rm(`${projectName}/entorno-juan-scaffold.json`);
 
   if (scaffold.renames !== undefined) {
     for (let { from, to } of scaffold.renames) {

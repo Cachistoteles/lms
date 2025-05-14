@@ -66,7 +66,7 @@ export const chat = command({
         model = await client.llm.model(args.model);
       } catch (e) {
         logger.error(`Model "${args.model}" not found, check available models with:`);
-        logger.error("  lms ls");
+        logger.error("  entorno-juan ls");
         process.exit(1);
       }
     } else {
@@ -74,7 +74,7 @@ export const chat = command({
         model = await client.llm.model();
       } catch (e) {
         logger.error("No loaded default model found, load one first:");
-        logger.error("  lms load");
+        logger.error("  entorno-juan load");
         process.exit(1);
       }
     }

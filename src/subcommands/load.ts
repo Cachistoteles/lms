@@ -1,7 +1,7 @@
 import { makeTitledPrettyError, type SimpleLogger, text } from "@lmstudio/lms-common";
 import { terminalSize } from "@lmstudio/lms-isomorphic";
 import { type LLMLlamaAccelerationOffloadRatio, type ModelInfo } from "@lmstudio/lms-shared-types";
-import { type LLMLoadModelConfig, type LMStudioClient } from "@lmstudio/sdk";
+import { type LLMLoadModelConfig } from "@lmstudio/sdk";
 import chalk from "chalk";
 import { boolean, command, flag, option, optional, positional, string, type Type } from "cmd-ts";
 import fuzzy from "fuzzy";
@@ -300,7 +300,7 @@ async function selectModelToLoad(
 
 async function loadModel(
   logger: SimpleLogger,
-  client: LMStudioClient,
+  client: any, // Sustituido LMStudioClient por EntornoJuanClient (interfaz genérica para tu entorno)
   model: ModelInfo,
   identifier: string | undefined,
   config: LLMLoadModelConfig,

@@ -1,4 +1,4 @@
-import { text } from "@lmstudio/lms-common";
+import { text } from "@entorno-juan/lms-common";
 import { command, flag, optional, positional, string, type Type } from "cmd-ts";
 import { createClient, createClientArgs } from "../createClient.js";
 import { createLogger, logLevelArgs } from "../logLevel.js";

@@ -17,7 +17,7 @@ import { homedir } from "os";
 import { basename, dirname, join } from "path";
 import { z } from "zod";
 import { getCliPref } from "../cliPref.js";
-import { defaultModelsFolder } from "../lmstudioPaths.js";
+import { defaultModelsFolder } from "../entornoJuanPaths.js";
 import { createLogger, logLevelArgs } from "../logLevel.js";
 
 const userRepoType: Type<string, [string, string]> = {
@@ -32,7 +32,7 @@ const userRepoType: Type<string, [string, string]> = {
 
 export const importCmd = command({
   name: "import",
-  description: "Import a model file into LM Studio",
+  description: "Importar un archivo de modelo al Entorno de Juan",
   args: {
     path: positional({
       type: File,
@@ -298,7 +298,7 @@ function getUserAppDataPath() {
 }
 
 /**
- * Locate the settings.json file of LM Studio.
+ * Localiza el archivo settings.json del Entorno de Juan.
  *
  * @param logger - The logger to use.
  * @returns A promise that resolves with the path to the settings.json file, or null if it does not
@@ -308,7 +308,7 @@ async function locateSettingsJson(logger: SimpleLogger) {
   logger.debug("Locating settings.json");
   const appDataFolderPath = getUserAppDataPath();
   logger.debug("AppData folder path", appDataFolderPath);
-  const settingsJsonFilePath = join(appDataFolderPath, "LM Studio", "settings.json");
+  const settingsJsonFilePath = join(appDataFolderPath, "Entorno de Juan", "settings.json");
   logger.debug("Settings.json file path", settingsJsonFilePath);
   try {
     await access(settingsJsonFilePath);
@@ -331,7 +331,7 @@ async function resolveModelsFolderPath(logger: SimpleLogger) {
   let modelsFolderPath = defaultModelsFolder;
   if (settingsJsonPath === null) {
     logger.warn(
-      "Could not locate LM Studio configuration file, using default path:",
+      "No se pudo localizar el archivo de configuración del Entorno de Juan, usando ruta por defecto:",
       modelsFolderPath,
     );
   } else {
@@ -344,7 +344,7 @@ async function resolveModelsFolderPath(logger: SimpleLogger) {
       }
     } catch (error) {
       logger.warn(
-        "Could not parse LM Studio configuration file, using default path:",
+        "No se pudo analizar el archivo de configuración del Entorno de Juan, usando ruta por defecto:",
         modelsFolderPath,
       );
       logger.debug(error);
@@ -377,7 +377,7 @@ async function warnAboutMove(
   }
   logger.debug("Asking user to confirm moving the file");
   process.stderr.write(text`
-    ${"\n"}${chalk.greenBright.underline(" Importing model file into LM Studio ")}
+    ${"\n"}${chalk.greenBright.underline(" Importando archivo de modelo al Entorno de Juan ")}
 
     By default, ${chalk.yellow("lms import")} will ${chalk.cyanBright("move")} the file to LM
     Studio's models folder:

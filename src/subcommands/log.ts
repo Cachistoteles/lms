@@ -6,7 +6,7 @@ import { createLogger, logLevelArgs } from "../logLevel.js";
 
 const stream = command({
   name: "stream",
-  description: "Stream logs from LM Studio",
+  description: "Transmite logs desde el Entorno de Juan",
   args: {
     json: flag({
       long: "json",
@@ -20,7 +20,7 @@ const stream = command({
     const client = await createClient(logger, args);
     const { json } = args;
 
-    logger.info("Streaming logs from LM Studio\n");
+    logger.info("Transmitiendo logs desde el Entorno de Juan\n");
 
     client.diagnostics.unstable_streamLogs(log => {
       if (json) {
@@ -51,7 +51,7 @@ function printLlmPredictionLogEvent(
 export const log = subcommands({
   name: "log",
   description:
-    "Log operations. Currently only supports streaming logs from LM Studio via `lms log stream`",
+    "Operaciones de log. Actualmente solo soporta transmitir logs desde el Entorno de Juan vía `lms log stream`",
   cmds: {
     stream,
   },

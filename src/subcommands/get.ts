@@ -8,7 +8,7 @@ import {
   type ModelCompatibilityType,
 } from "@lmstudio/lms-shared-types";
 import {
-  type LMStudioClient,
+  type EntornoJuanClient, // Sustituido LMStudioClient por EntornoJuanClient (interfaz genérica para tu entorno)
   type ModelSearchResultDownloadOption,
   type ModelSearchResultEntry,
 } from "@lmstudio/sdk";
@@ -42,7 +42,7 @@ export const get = command({
       description: text`
         Whether to include MLX models in the search results. If any of "--mlx" or "--gguf" flag is
         specified, only models that match the specified flags will be shown; Otherwise only models
-        supported by your installed LM Runtimes will be shown.
+        supported by your installed Entorno-Juan Runtimes will be shown.
       `,
     }),
     gguf: flag({
@@ -51,7 +51,7 @@ export const get = command({
       description: text`
         Whether to include GGUF models in the search results. If any of "--mlx" or "--gguf" flag
         is specified, only models that match the specified flags will be shown; Otherwise only
-        models supported by your installed LM Runtimes will be shown.
+        models supported by your installed Entorno-Juan Runtimes will be shown.
       `,
     }),
     limit: option({
@@ -109,7 +109,7 @@ export const get = command({
     const client = await createClient(logger, args);
 
     if (modelName !== undefined && modelName.split("/").length === 2) {
-      // New lms get behavior: download artifact
+      // New entorno-juan get behavior: download artifact
       if (mlx) {
         logger.error("You cannot use the --mlx flag when an exact artifact is specified.");
         process.exit(1);
@@ -147,7 +147,7 @@ export const get = command({
       return;
     }
 
-    // Legacy lms get behavior
+    // Legacy entorno-juan get behavior
 
     let compatibilityTypes: Array<ModelCompatibilityType> | undefined = undefined;
     if (mlx || gguf) {
@@ -355,12 +355,12 @@ export const get = command({
       if (alreadyExisted) {
         logger.infoText`
           You already have this model. You can load it with:
-          ${chalk.yellowBright("\n\n    lms load " + defaultIdentifier)}
+          ${chalk.yellowBright("\n\n    entorno-juan load " + defaultIdentifier)}
         `;
       } else {
         logger.infoText`
           Download completed. You can load the model with:
-          ${chalk.yellowBright("\n\n    lms load " + defaultIdentifier)}
+          ${chalk.yellowBright("\n\n    entorno-juan load " + defaultIdentifier)}
         `;
       }
       logger.info();
@@ -600,7 +600,7 @@ async function artifactDownloadPlanToString(
 }
 
 async function downloadArtifact(
-  client: LMStudioClient,
+  client: EntornoJuanClient, // Sustituido LMStudioClient por EntornoJuanClient (interfaz genérica para tu entorno)
   logger: SimpleLogger,
   owner: string,
   name: string,

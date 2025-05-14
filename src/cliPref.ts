@@ -1,7 +1,7 @@
 import { SimpleLogger } from "@lmstudio/lms-common";
 import { z } from "zod";
 import { SimpleFileData } from "./SimpleFileData.js";
-import { cliPrefPath } from "./lmstudioPaths.js";
+import { cliPrefPath } from "./entornoJuanPaths.js";
 
 export async function getCliPref(logger?: SimpleLogger) {
   const cliPrefSchema = z.object({

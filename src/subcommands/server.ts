@@ -3,7 +3,7 @@ import { command, flag, number, option, optional, subcommands } from "cmd-ts";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { wakeUpService } from "../createClient.js";
-import { serverConfigPath, serverCtlPath } from "../lmstudioPaths.js";
+import { serverConfigPath, serverCtlPath } from "../entornoJuanPaths.js";
 import { createLogger, logLevelArgs } from "../logLevel.js";
 
 type HttpServerCtl =
@@ -61,7 +61,7 @@ export async function checkHttpServer(
   port: number,
   host: string = "127.0.0.1",
 ) {
-  const url = `http://${host}:${port}/lmstudio-greeting`;
+  const url = `http://${host}:${port}/entorno-juan-greeting`;
   logger.debug(`Checking server at ${url}`);
   try {
     const abortController = new AbortController();
@@ -72,8 +72,8 @@ export async function checkHttpServer(
       return false;
     }
     const json = await response.json();
-    if (json?.lmstudio !== true) {
-      logger.debug(`Not an LM Studio server:`, json);
+    if (json?.entornoJuan !== true) {
+      logger.debug(`Not un servidor del Entorno de Juan:`, json);
       return false;
     }
   } catch (e) {
@@ -131,7 +131,7 @@ export async function startServer(
   }
   if (cors) {
     logger.warnText`
-      CORS is enabled. This means any website you visit can use the LM Studio server.
+      CORS is enabled. This means any website you visit can use el servidor del Entorno de Juan.
     `;
   }
   logger.debug(`Attempting to start the server on port ${port}...`);
@@ -142,9 +142,9 @@ export async function startServer(
   } else {
     const launched = await wakeUpService(logger);
     if (launched) {
-      logger.debug(`LM Studio service is running.`);
-      // At this point, LM Studio is launching. Once it is ready, it will consume the control file
-      // and start the server. Let's wait for that to happen.
+      logger.debug(`El servicio del Entorno de Juan está corriendo.`);
+      // En este punto, el Entorno de Juan se está iniciando. Una vez listo, consumirá el archivo de control
+      // y comenzará el servidor. Vamos a esperar a que eso suceda.
       if (await waitForCtlFileClear(logger, 1000, 10)) {
         logger.debug(`Requested the server to be started on port ${port}.`);
       } else {
@@ -153,8 +153,7 @@ export async function startServer(
       }
     } else {
       logger.errorText`
-        Failed to start LM Studio service. Please make sure it is installed and have run it at
-        least once.
+        Error al iniciar el servicio del Entorno de Juan. Por favor, asegúrate de que está instalado y ejecútalo al menos una vez.
       `;
       return false;
     }

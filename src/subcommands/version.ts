@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { command, flag } from "cmd-ts";
 
 function getVersion() {
-  return "<LMS-CLI-CURRENT-VERSION>";
+  return "<ENTORNO-JUAN-CLI-CURRENT-VERSION>";
 }
 
 export function printVersion() {
@@ -21,9 +21,9 @@ export function printVersion() {
   });
 
   console.info();
-  console.info(`lms - LM Studio CLI - v${getVersion()}`);
+  console.info(`entorno-juan - Entorno de Juan CLI - v${getVersion()}`);
   // console.info("Licensed under the MIT License");
-  console.info(chalk.gray("GitHub: https://github.com/lmstudio-ai/lmstudio-cli"));
+  console.info(chalk.gray("GitHub: https://github.com/entorno-juan/entorno-juan-cli"));
 }
 
 export const version = command({

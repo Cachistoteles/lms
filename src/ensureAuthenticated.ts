@@ -1,9 +1,10 @@
 import { makePromise, makeTitledPrettyError, text, type SimpleLogger } from "@lmstudio/lms-common";
-import { type LMStudioClient } from "@lmstudio/sdk";
+// Sustituido LMStudioClient por EntornoJuanClient (interfaz genérica para tu entorno)
+import { type EntornoJuanClient } from "@lmstudio/sdk";
 import chalk from "chalk";
 
 export async function ensureAuthenticated(
-  client: LMStudioClient,
+  client: EntornoJuanClient,
   logger: SimpleLogger,
   { yes = false }: { yes?: boolean } = {},
 ) {

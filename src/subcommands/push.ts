@@ -33,7 +33,7 @@ const overridesType: Type<string, any> = {
 
 export const push = command({
   name: "push",
-  description: "Uploads the plugin in the current folder to LM Studio Hub.",
+  description: "Sube el plugin en la carpeta actual al Hub del Entorno de Juan.",
   args: {
     ...logLevelArgs,
     ...createClientArgs,

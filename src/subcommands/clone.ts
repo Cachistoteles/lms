@@ -1,5 +1,5 @@
-import { text } from "@lmstudio/lms-common";
-import { kebabCaseRegex, kebabCaseWithDotsRegex } from "@lmstudio/lms-shared-types";
+import { text } from "@entorno-juan/lms-common";
+import { kebabCaseRegex, kebabCaseWithDotsRegex } from "@entorno-juan/lms-shared-types";
 import { command, positional, string, type Type } from "cmd-ts";
 import { resolve } from "path";
 import { createClient, createClientArgs } from "../createClient.js";
@@ -29,7 +29,7 @@ const artifactIdentifierType: Type<string, { owner: string; name: string }> = {
 
 export const clone = command({
   name: "clone",
-  description: "Clone an artifact from LM Studio Hub to a local folder.",
+  description: "Clone an artifact from Entorno Juan Hub to a local folder.",
   args: {
     artifactIdentifier: positional({
       displayName: "artifact-identifier",

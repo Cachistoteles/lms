@@ -9,7 +9,7 @@ import { checkHttpServer, getServerConfig } from "./server.js";
 
 export const status = command({
   name: "status",
-  description: "Prints the status of LM Studio",
+  description: "Prints the status del Entorno de Juan",
   args: {
     ...logLevelArgs,
     ...createClientArgs,
@@ -64,7 +64,7 @@ export const status = command({
 
         ${chalk.gray("\n(i) To start the server, run the following command:")}
 
-            ${chalk.yellow("lms server start ")}
+            ${chalk.yellow("entorno-juan server start ")}
       `;
     }
     console.info(

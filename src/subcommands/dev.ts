@@ -3,7 +3,7 @@ import { EsPluginRunnerWatcher } from "@lmstudio/lms-es-plugin-runner/runner-wat
 import { UtilBinary } from "@lmstudio/lms-es-plugin-runner/util-binary";
 import { pluginManifestSchema } from "@lmstudio/lms-shared-types";
 import {
-  type LMStudioClient,
+  type EntornoJuanClient,
   type PluginManifest,
   type RegisterDevelopmentPluginOpts,
 } from "@lmstudio/sdk";
@@ -16,14 +16,19 @@ import { askQuestion } from "../confirm.js";
 import { createClient, createClientArgs } from "../createClient.js";
 import { exists } from "../exists.js";
 import { findProjectFolderOrExit } from "../findProjectFolder.js";
-import { pluginsFolderPath } from "../lmstudioPaths.js";
+import { pluginsFolderPath } from "../entornoJuanPaths.js";
 import { createLogger, logLevelArgs } from "../logLevel.js";
+
+// Cambiado de LMStudioClient a EntornoJuanClient para personalización
+class EntornoJuanClient {
+  // ...implementación personalizada...
+}
 
 type PluginProcessStatus = "stopped" | "starting" | "running" | "restarting";
 
 class PluginProcess {
   public constructor(
-    private readonly client: LMStudioClient,
+    private readonly client: EntornoJuanClient,
     private readonly registerDevelopmentPluginOpts: RegisterDevelopmentPluginOpts,
     private readonly cwd: string,
     private readonly logger: SimpleLogger,
@@ -127,7 +132,7 @@ export const dev = command({
       short: "i",
       description: text`
         When specified, instead of starting the development server, installs the plugin to
-        LM Studio.
+        Entorno de Juan.
       `,
     }),
     yes: flag({
@@ -171,11 +176,10 @@ async function handleInstall(
   projectPath: string,
   manifest: PluginManifest,
   logger: SimpleLogger,
-  client: LMStudioClient,
+  client: EntornoJuanClient,
   { yes }: { yes: boolean },
 ): Promise<number> {
-  // Currently, we naively copy paste the entire plugin folder to LM Studio, and then trigger a
-  // plugin re-index.
+  // Actualmente, copiamos toda la carpeta de plugins al Entorno de Juan y luego activamos un trigger
   logger.info(`Installing the plugin ${manifest.owner}/${manifest.name}...`);
   logger.debug("Copying from", projectPath);
   const destinationPath = join(pluginsFolderPath, manifest.owner, manifest.name);
@@ -206,7 +210,7 @@ async function handleInstall(
   return 0;
 }
 
-async function ensureNpmDependencies(path: string, logger: SimpleLogger, client: LMStudioClient) {
+async function ensureNpmDependencies(path: string, logger: SimpleLogger, client: EntornoJuanClient) {
   const packageJson = join(path, "package.json");
   if (!(await exists(packageJson))) {
     logger.error("No package.json found in the plugin folder.");
@@ -224,7 +228,7 @@ async function handleDevServer(
   projectPath: string,
   manifest: PluginManifest,
   logger: SimpleLogger,
-  client: LMStudioClient,
+  client: EntornoJuanClient,
 ) {
   if (manifest.type !== "plugin") {
     logger.error("The version of lms you are using only supports plugins.");

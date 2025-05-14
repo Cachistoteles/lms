@@ -1,11 +1,11 @@
 import { apiServerPorts, type SimpleLogger, text } from "@lmstudio/lms-common";
-import { LMStudioClient, type LMStudioClientConstructorOpts } from "@lmstudio/sdk";
+import { type LMStudioClientConstructorOpts } from "@lmstudio/sdk";
 import chalk from "chalk";
 import { spawn } from "child_process";
 import { option, optional, string } from "cmd-ts";
 import { randomBytes } from "crypto";
 import { readFile } from "fs/promises";
-import { appInstallLocationFilePath, lmsKey2Path } from "./lmstudioPaths.js";
+import { appInstallLocationFilePath, lmsKey2Path } from "./entornoJuanPaths.js";
 import { type LogLevelArgs } from "./logLevel.js";
 import { checkHttpServer } from "./subcommands/server.js";
 import { refinedNumber } from "./types/refinedNumber.js";
@@ -21,18 +21,14 @@ export const createClientArgs = {
     type: optional(string),
     long: "host",
     description: text`
-      If you wish to connect to a remote LM Studio instance, specify the host here. Note that, in
-      this case, lms will connect using client identifier "lms-cli-remote-<random chars>", which
-      will not be a privileged client, and will restrict usage of functionalities such as
-      "lms push".
+      Si deseas conectarte a una instancia remota del Entorno de Juan, especifica el host aquí. En ese caso, se usará un identificador de cliente no privilegiado.
     `,
   }),
   port: option({
     type: optional(refinedNumber({ integer: true, min: 0, max: 65535 })),
     long: "port",
     description: text`
-      The port where LM Studio can be reached. If not provided and the host is set to "127.0.0.1"
-      (default), the last used port will be used; otherwise, 1234 will be used.
+      El puerto donde se puede acceder al Entorno de Juan. Si no se proporciona y el host es "127.0.0.1", se usará el último puerto usado; de lo contrario, 1234.
     `,
   }),
 };
@@ -50,7 +46,7 @@ async function isLocalServerAtPortLMStudioServerOrThrow(port: number) {
   }
   const json = await response.json();
   if (json?.lmstudio !== true) {
-    throw new Error("Not an LM Studio server.");
+    throw new Error("No es un servidor del Entorno de Juan.");
   }
   return port;
 }
@@ -63,7 +59,7 @@ async function tryFindLocalAPIServer(): Promise<number | null> {
 }
 
 export async function wakeUpService(logger: SimpleLogger): Promise<boolean> {
-  logger.info("Waking up LM Studio service...");
+  logger.info("Iniciando el servicio del Entorno de Juan...");
   const appInstallLocationPath = appInstallLocationFilePath;
   logger.debug(`Resolved appInstallLocationPath: ${appInstallLocationPath}`);
   try {
@@ -97,6 +93,11 @@ export async function wakeUpService(logger: SimpleLogger): Promise<boolean> {
     logger.debug(`Failed to launch application`, e);
     return false;
   }
+}
+
+// Cambiado de LMStudioClient a EntornoJuanClient para personalización
+class EntornoJuanClient {
+  // ...implementación personalizada...
 }
 
 export interface CreateClientOpts {}
@@ -153,11 +154,10 @@ export async function createClient(
     if (localPort !== null) {
       const baseUrl = `ws://${host}:${localPort}`;
       logger.debug(`Found local API server at ${baseUrl}`);
-      return new LMStudioClient({ baseUrl, logger, ...auth });
+      return new EntornoJuanClient({ baseUrl, logger, ...auth });
     }
 
-    // At this point, the user wants to access the local LM Studio, but it is not running. We will
-    // wake up the service and poll the API server until it is up.
+    // En este punto, el usuario quiere acceder al Entorno de Juan local, pero no está corriendo. Se intentará iniciar.
 
     await wakeUpService(logger);
 
@@ -180,7 +180,7 @@ export async function createClient(
           };
         }
 
-        return new LMStudioClient({ baseUrl, logger, ...auth });
+        return new EntornoJuanClient({ baseUrl, logger, ...auth });
       }
     }
 
@@ -202,7 +202,7 @@ export async function createClient(
   }
   const baseUrl = `ws://${host}:${port}`;
   logger.debug(`Found server at ${port}`);
-  return new LMStudioClient({
+  return new EntornoJuanClient({
     baseUrl,
     logger,
     ...auth,

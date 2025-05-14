@@ -6,7 +6,7 @@ import { createLogger, logLevelArgs } from "../logLevel.js";
 
 export const login = command({
   name: "login",
-  description: "Authenticate with LM Studio",
+  description: "Autenticarse con el Entorno de Juan",
   args: {
     withPreAuthenticatedKeys: flag({
       type: boolean,
